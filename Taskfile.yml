@@ -9,7 +9,7 @@ tasks:
   build:
     desc: Build the Docker image for the LeanIX MCP server
     cmds:
-      - docker build -t {{.IMAGE_NAME}}:{{.IMAGE_TAG}} .
+      - docker build --no-cache -t {{.IMAGE_NAME}}:{{.IMAGE_TAG}} .
 
   publish:
     desc: Publish the Docker image to a registry (set REGISTRY var)
@@ -24,4 +24,4 @@ tasks:
   run:
     desc: Run the LeanIX MCP server Docker container with .env
     cmds:
-      - docker run --rm --env-file .env {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
+      - docker run --rm --env-file .env -p 8089:8089 {{.IMAGE_NAME}}:{{.IMAGE_TAG}}

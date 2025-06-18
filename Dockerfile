@@ -15,7 +15,7 @@ COPY . .
 
 # Expose no ports (stdio service)
 # If you want to expose a port, uncomment the next line
-# EXPOSE 3000
+EXPOSE 8089
 
 # Use environment variables from the host or --env-file
 # Do NOT copy .env for security
