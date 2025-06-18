@@ -4,6 +4,10 @@ A Model Context Protocol (MCP) server that connects LeanIX to AI assistants. It 
 
 ## Core Functionality
 
+**Streaming Compatibility:**  
+This server supports Server-Sent Events (SSE) and HTTP streaming for tool responses, enabling real-time updates and compatibility with modern AI assistants and clients.  
+**Note:** stdio (standard input/output) is not supported.
+
 This integration provides five MCP tools for LeanIX operations:
 
 1. **Fact Sheet Overview**: Get counts and statistics of fact sheets in your workspace
@@ -30,6 +34,25 @@ This integration provides five MCP tools for LeanIX operations:
    LEANIX_SUBDOMAIN=your-workspace-subdomain
    LEANIX_TOKEN=your-api-token
    ```
+
+## Build and Run
+
+You can run the server directly with Node.js or using Docker.
+
+**Run with Node.js (development):**
+```bash
+npm install
+node server.js
+```
+
+**Run with Docker:**
+```bash
+docker build -t leanix-mcp .
+docker run --env-file .env -p 3000:3000 leanix-mcp
+```
+- The server will start and listen for MCP connections on the default port (see server.js for details).
+- Ensure your `.env` file is present and correctly configured.
+
 
 ## Project Structure
 
@@ -73,32 +96,6 @@ This integration provides five MCP tools for LeanIX operations:
 
 4. **Environment Variables**: Make sure to properly load and validate environment variables before making any API calls.
 
-## Claude Desktop Configuration
-
-To use this MCP server with Claude Desktop, you need to add the server configuration to Claude's config file. The config file is typically located at:
-- Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-
-Add the following configuration:
-
-```json
-{
-    "mcpServers": {
-      "myserver": {
-        "command": "node",
-        "args": [
-          "/path/to/your/lean/server.js"
-        ]
-      }
-    }
-}
-```
-
-Replace `/path/to/your/lean/server.js` with the absolute path to your server.js file. This tells Claude Desktop to:
-1. Start this MCP server when needed
-2. Connect to it for LeanIX operations
-3. Run it using Node.js
-
 ## Testing Your Integration
 
 1. Start the server:
@@ -126,4 +123,4 @@ Replace `/path/to/your/lean/server.js` with the absolute path to your server.js 
 
 ## License
 
-MIT 
+MIT
