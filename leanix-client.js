@@ -15,7 +15,15 @@ export class LeanIXClient {
 
   async getAccessToken() {
     const basicAuth = Buffer.from(`apitoken:${this.apiToken}`).toString('base64');
-    
+
+    console.log(`[LeanIXClient] Attempting to get access token from: ${this.tokenEndpoint}`);
+    console.log(`[LeanIXClient] Using API token: ${this.apiToken ? '******** (present)' : 'MISSING'}`);
+    const headers = {
+      'Authorization': `Basic ${basicAuth}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    console.log('[LeanIXClient] Request headers (Authorization structure):', { Authorization: `Basic ********`, 'Content-Type': headers['Content-Type'] });
+
     const response = await fetch(this.tokenEndpoint, {
       method: 'POST',
       headers: {
@@ -26,6 +34,8 @@ export class LeanIXClient {
     });
 
     if (!response.ok) {
+      const errorBody = await response.text();
+      console.error(`[LeanIXClient] Failed to get access token. Status: ${response.status}, Body: ${errorBody}`);
       throw new Error(`Failed to get access token: ${response.status}`);
     }
 
@@ -41,7 +51,7 @@ export class LeanIXClient {
         'Content-Type': 'application/json'
       }
     });
-    
+
     return await this.client.request(query, variables);
   }
 }
